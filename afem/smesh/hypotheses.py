@@ -17,22 +17,20 @@
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 try:
-    from OCCT.BLSURFPlugin import BLSURFPlugin_BLSURF, BLSURFPlugin_Hypothesis
+    from OCC.Core.BLSURFPlugin import BLSURFPlugin_BLSURF, BLSURFPlugin_Hypothesis
 
     has_mg = True
 except ImportError:
     BLSURFPlugin_BLSURF, BLSURFPlugin_Hypothesis = None, None
     has_mg = False
 
-from OCCT.NETGENPlugin import (NETGENPlugin_Hypothesis_2D,
+from OCC.Core.NETGENPlugin import (NETGENPlugin_Hypothesis_2D,
                                NETGENPlugin_NETGEN_2D,
                                NETGENPlugin_NETGEN_2D_ONLY,
                                NETGENPlugin_SimpleHypothesis_2D,
-                               NETGENPlugin_Hypothesis,
-                               NETGENPlugin_NETGEN_3D,
-                               NETGENPlugin_NETGEN_2D3D)
-from OCCT.SMESH import SMESH_Algo, SMESH_Hypothesis
-from OCCT.StdMeshers import (StdMeshers_Adaptive1D,
+                               NETGENPlugin_Hypothesis)
+from OCC.Core.SMESH import SMESH_Algo, SMESH_Hypothesis
+from OCC.Core.StdMeshers import (StdMeshers_Adaptive1D,
                              StdMeshers_Deflection1D, StdMeshers_LocalLength,
                              StdMeshers_MaxLength,
                              StdMeshers_NumberOfSegments,

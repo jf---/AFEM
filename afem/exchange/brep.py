@@ -16,9 +16,9 @@
 # You should have received a copy of the GNU Lesser General Public
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
-from OCCT.BRep import BRep_Builder
-from OCCT.BRepTools import BRepTools
-from OCCT.TopoDS import TopoDS_Shape
+from OCC.Core.BRep import BRep_Builder
+from OCC.Core.BRepTools import breptools_Read
+from OCC.Core.TopoDS import TopoDS_Shape
 
 from afem.topology.entities import Shape
 
@@ -46,6 +46,7 @@ def read_brep(fn):
     """
     shape = TopoDS_Shape()
     builder = BRep_Builder()
-    BRepTools.Read_(shape, fn, builder)
+    # BRepTools.Read_(shape, fn, builder)
+    breptools_Read(shape, fn, builder)
 
     return Shape.wrap(shape)

@@ -18,9 +18,10 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 from math import sqrt
 
-from OCCT.Extrema import (Extrema_ExtPC, Extrema_ExtCC, Extrema_POnCurv,
+from OCC.Core import GeomProjLib
+from OCC.Core.Extrema import (Extrema_ExtPC, Extrema_ExtCC, Extrema_POnCurv,
                           Extrema_ExtPS, Extrema_ExtCS, Extrema_POnSurf)
-from OCCT.GeomProjLib import GeomProjLib
+from OCC.Core.GeomProjLib import geomprojlib, geomprojlib_Project, geomprojlib_ProjectOnPlane
 
 from afem.adaptor.entities import AdaptorCurve, AdaptorSurface
 from afem.geometry.check import CheckGeom
@@ -223,7 +224,7 @@ class ProjectPointToSurface(PointProjector):
             npts = ext.NbExt()
             for i in range(1, npts + 1):
                 pos = ext.Point(i)
-                ui, vi = pos.Parameter(0., 0.)
+                ui, vi = pos.Parameter() #0., 0.)
                 pi = adp_srf.eval(ui, vi)
                 di = sqrt(ext.SquareDistance(i))
                 self._results.append([pi, (ui, vi), di])
@@ -296,7 +297,7 @@ class ProjectCurveToPlane(CurveProjector):
             direction = pln.object.Pln().Axis().Direction()
 
         # OCC projection
-        hcrv = GeomProjLib.ProjectOnPlane_(crv.object, pln.object, direction,
+        hcrv = geomprojlib_ProjectOnPlane(crv.object, pln.object, direction,
                                            keep_param)
 
         self._crv = Curve(hcrv)
@@ -317,5 +318,5 @@ class ProjectCurveToSurface(CurveProjector):
         super(ProjectCurveToSurface, self).__init__()
 
         # OCC projection
-        hcrv = GeomProjLib.Project_(crv.object, srf.object)
+        hcrv = geomprojlib_Project(crv.object, srf.object)
         self._crv = Curve(hcrv)

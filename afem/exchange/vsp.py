@@ -18,11 +18,11 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 import json
 
-from OCCT.BRepBuilderAPI import (BRepBuilderAPI_MakeFace,
+from OCC.Core.BRepBuilderAPI import (BRepBuilderAPI_MakeFace,
                                  BRepBuilderAPI_MakeWire)
-from OCCT.GCPnts import GCPnts_QuasiUniformDeflection
-from OCCT.ShapeFix import ShapeFix_Wire
-from OCCT.ShapeUpgrade import ShapeUpgrade_SplitSurface
+from OCC.Core.GCPnts import GCPnts_QuasiUniformDeflection
+from OCC.Core.ShapeFix import ShapeFix_Wire
+from OCC.Core.ShapeUpgrade import ShapeUpgrade_SplitSurface
 
 from afem.adaptor.entities import AdaptorCurve
 from afem.config import logger

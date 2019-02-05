@@ -18,27 +18,31 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 from math import radians
 
-from OCCT.BRepBuilderAPI import (BRepBuilderAPI_MakeFace,
+from OCC.Core.BRepBuilderAPI import (BRepBuilderAPI_MakeFace,
                                  BRepBuilderAPI_MakeEdge,
                                  BRepBuilderAPI_MakeVertex)
-from OCCT.BRepGProp import BRepGProp
-from OCCT.GCPnts import GCPnts_AbscissaPoint
-from OCCT.GProp import GProp_GProps
-from OCCT.Geom import (Geom_Line, Geom_Circle, Geom_Ellipse, Geom_BSplineCurve,
+from OCC.Core.BRepGProp import brepgprop_SurfaceProperties
+from OCC.Core.GCPnts import GCPnts_AbscissaPoint
+from OCC.Core.GProp import GProp_GProps
+from OCC.Core.Geom import (Geom_Line, Geom_Circle, Geom_Ellipse, Geom_BSplineCurve,
                        Geom_TrimmedCurve, Geom_Plane, Geom_BSplineSurface,
                        Geom_Curve, Geom_Surface, Geom_Geometry)
-from OCCT.Geom2d import Geom2d_BSplineCurve, Geom2d_Curve
-from OCCT.Geom2dAdaptor import Geom2dAdaptor_Curve
-from OCCT.GeomAPI import (GeomAPI, GeomAPI_ProjectPointOnCurve,
-                          GeomAPI_ProjectPointOnSurf)
-from OCCT.GeomAbs import (GeomAbs_Shape, GeomAbs_JoinType, GeomAbs_CurveType,
-                          GeomAbs_SurfaceType)
-from OCCT.GeomAdaptor import GeomAdaptor_Curve, GeomAdaptor_Surface
-from OCCT.GeomLib import GeomLib_IsPlanarSurface
-from OCCT.TColStd import (TColStd_Array1OfInteger, TColStd_Array1OfReal,
+from OCC.Core.Geom2d import Geom2d_BSplineCurve, Geom2d_Curve
+from OCC.Core.Geom2dAdaptor import Geom2dAdaptor_Curve
+from OCC.Core.GeomAPI import geomapi
+# from OCC.Core.GeomAbs import (GeomAbs_Shape, GeomAbs_JoinType, GeomAbs_CurveType,
+#                           GeomAbs_SurfaceType)
+
+
+
+
+from OCC.Core.GeomAbs import *
+from OCC.Core.GeomAdaptor import GeomAdaptor_Curve, GeomAdaptor_Surface
+from OCC.Core.GeomLib import GeomLib_IsPlanarSurface
+from OCC.Core.TColStd import (TColStd_Array1OfInteger, TColStd_Array1OfReal,
                           TColStd_Array2OfReal)
-from OCCT.TColgp import TColgp_Array1OfPnt, TColgp_Array2OfPnt
-from OCCT.gp import (gp_Ax1, gp_Ax2, gp_Ax3, gp_Dir, gp_Pnt, gp_Pnt2d,
+from OCC.Core.TColgp import TColgp_Array1OfPnt, TColgp_Array2OfPnt
+from OCC.Core.gp import (gp_Ax1, gp_Ax2, gp_Ax3, gp_Dir, gp_Pnt, gp_Pnt2d,
                      gp_Vec2d, gp_Dir2d, gp_Vec)
 from numpy import add, array, float64, subtract, ones
 
@@ -811,7 +815,7 @@ class Curve2D(Geometry2D):
         :return: The 3-D curve.
         :rtype: afem.geometry.entities.Curve2D
         """
-        geom_crv = GeomAPI.To3d_(self.object, pln.gp_pln)
+        geom_crv = geomapi.To3d(self.object, pln.gp_pln)
         return Curve.wrap(geom_crv)
 
     @staticmethod
@@ -1795,18 +1799,18 @@ class Geometry(ViewableItem):
     _OCC_TYPE = Geom_Geometry
 
     # Continuities
-    C0 = GeomAbs_Shape.GeomAbs_C0
-    C1 = GeomAbs_Shape.GeomAbs_C1
-    C2 = GeomAbs_Shape.GeomAbs_C2
-    C3 = GeomAbs_Shape.GeomAbs_C3
-    CN = GeomAbs_Shape.GeomAbs_CN
-    G1 = GeomAbs_Shape.GeomAbs_G1
-    G2 = GeomAbs_Shape.GeomAbs_G2
+    C0 = GeomAbs_C0
+    C1 = GeomAbs_C1
+    C2 = GeomAbs_C2
+    C3 = GeomAbs_C3
+    CN = GeomAbs_CN
+    G1 = GeomAbs_G1
+    G2 = GeomAbs_G2
 
     # Join types
-    ARC = GeomAbs_JoinType.GeomAbs_Arc
-    TANGENT = GeomAbs_JoinType.GeomAbs_Tangent
-    INTERSECT = GeomAbs_JoinType.GeomAbs_Intersection
+    ARC = GeomAbs_Arc
+    TANGENT = GeomAbs_Tangent
+    INTERSECT = GeomAbs_Intersection
 
     def __init__(self, obj):
         if not isinstance(obj, self._OCC_TYPE):
@@ -1914,15 +1918,16 @@ class Curve(Geometry):
     _OCC_TYPE = Geom_Curve
 
     # Curve types
-    LINE = GeomAbs_CurveType.GeomAbs_Line
-    CIRCLE = GeomAbs_CurveType.GeomAbs_Circle
-    ELLIPSE = GeomAbs_CurveType.GeomAbs_Ellipse
-    HYPERBOLA = GeomAbs_CurveType.GeomAbs_Hyperbola
-    PARABOLA = GeomAbs_CurveType.GeomAbs_Parabola
-    BEZIER = GeomAbs_CurveType.GeomAbs_BezierCurve
-    BSPLINE = GeomAbs_CurveType.GeomAbs_BSplineCurve
-    OFFSET = GeomAbs_CurveType.GeomAbs_OffsetCurve
-    OTHER = GeomAbs_CurveType.GeomAbs_OtherCurve
+    LINE = GeomAbs_Line
+    CIRCLE = GeomAbs_Circle
+    ELLIPSE = GeomAbs_Ellipse
+    HYPERBOLA = GeomAbs_Hyperbola
+    PARABOLA = GeomAbs_Parabola
+    BEZIER = GeomAbs_BezierCurve
+    BSPLINE = GeomAbs_BSplineCurve
+    # no you DIDNT
+    OFFSET = GeomAbs_OffsetSurface #GeomAbs_OffsetCurve
+    OTHER = GeomAbs_OtherCurve
 
     @property
     def displayed_shape(self):
@@ -2487,17 +2492,17 @@ class Surface(Geometry):
     _OCC_TYPE = Geom_Surface
 
     # Surface types
-    PLANE = GeomAbs_SurfaceType.GeomAbs_Plane
-    CYLINDER = GeomAbs_SurfaceType.GeomAbs_Cylinder
-    CONE = GeomAbs_SurfaceType.GeomAbs_Cone
-    SPHERE = GeomAbs_SurfaceType.GeomAbs_Sphere
-    TORUS = GeomAbs_SurfaceType.GeomAbs_Torus
-    BEZIER = GeomAbs_SurfaceType.GeomAbs_BezierSurface
-    BSPLINE = GeomAbs_SurfaceType.GeomAbs_BSplineSurface
-    REVOLUTION = GeomAbs_SurfaceType.GeomAbs_SurfaceOfRevolution
-    EXTRUSION = GeomAbs_SurfaceType.GeomAbs_SurfaceOfExtrusion
-    OFFSET = GeomAbs_SurfaceType.GeomAbs_OffsetSurface
-    OTHER = GeomAbs_SurfaceType.GeomAbs_OtherSurface
+    PLANE = GeomAbs_Plane
+    CYLINDER = GeomAbs_Cylinder
+    CONE = GeomAbs_Cone
+    SPHERE = GeomAbs_Sphere
+    TORUS = GeomAbs_Torus
+    BEZIER = GeomAbs_BezierSurface
+    BSPLINE = GeomAbs_BSplineSurface
+    REVOLUTION = GeomAbs_SurfaceOfRevolution
+    EXTRUSION = GeomAbs_SurfaceOfExtrusion
+    OFFSET = GeomAbs_OffsetSurface
+    OTHER = GeomAbs_OtherSurface
 
     @property
     def displayed_shape(self):
@@ -2653,7 +2658,7 @@ class Surface(Geometry):
         """
         f = BRepBuilderAPI_MakeFace(self.object, u1, u2, v1, v2, tol).Face()
         sprops = GProp_GProps()
-        BRepGProp.SurfaceProperties_(f, sprops, tol)
+        brepgprop_SurfaceProperties(f, sprops, tol)
         return sprops.Mass()
 
     def u_iso(self, u):

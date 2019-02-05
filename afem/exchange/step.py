@@ -16,13 +16,13 @@
 # You should have received a copy of the GNU Lesser General Public
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
-from OCCT.IFSelect import (IFSelect_RetError,
+from OCC.Core.IFSelect import (IFSelect_RetError,
                            IFSelect_RetDone)
-from OCCT.Interface import Interface_Static
-from OCCT.STEPConstruct import STEPConstruct
-from OCCT.STEPControl import (STEPControl_AsIs, STEPControl_Writer,
+from OCC.Core.Interface import Interface_Static
+from OCC.Core.STEPConstruct import stepconstruct_FindEntity
+from OCC.Core.STEPControl import (STEPControl_AsIs, STEPControl_Writer,
                               STEPControl_Reader)
-from OCCT.TCollection import TCollection_HAsciiString
+from OCC.Core.TCollection import TCollection_HAsciiString
 
 from afem.config import Settings, units_dict
 from afem.topology.entities import Shape
@@ -110,7 +110,7 @@ class StepWrite(object):
         :return: *True* if name is set, *False* otherwise.
         :rtype: bool
         """
-        item = STEPConstruct.FindEntity_(self._fp, shape.object)
+        item = stepconstruct_FindEntity(self._fp, shape.object)
         if not item:
             return False
 

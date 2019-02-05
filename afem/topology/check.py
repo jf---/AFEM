@@ -16,9 +16,9 @@
 # You should have received a copy of the GNU Lesser General Public
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
-from OCCT.BRepCheck import BRepCheck_Analyzer, BRepCheck_NoError
-from OCCT.BRepClass3d import BRepClass3d_SolidClassifier
-from OCCT.TopAbs import TopAbs_IN, TopAbs_ON, TopAbs_OUT, TopAbs_UNKNOWN
+from OCC.Core.BRepCheck import BRepCheck_Analyzer, BRepCheck_NoError
+from OCC.Core.BRepClass3d import BRepClass3d_SolidClassifier
+from OCC.Core.TopAbs import TopAbs_IN, TopAbs_ON, TopAbs_OUT, TopAbs_UNKNOWN
 
 from afem.config import logger
 from afem.geometry.check import CheckGeom

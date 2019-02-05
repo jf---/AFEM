@@ -18,7 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 from __future__ import division, division
 
-from OCCT.BSplCLib import BSplCLib
+from OCC.Core.BSplCLib import bsplclib
 from numpy import array, diff, float64, floor, hstack, sqrt, sum, zeros
 from numpy.linalg import norm
 
@@ -179,7 +179,7 @@ def reparameterize_knots(u1, u2, tcol_knots):
     """
     Reparameterize the knot values between *u1* and *u2*
     """
-    BSplCLib.Reparametrize_(u1, u2, tcol_knots)
+    bsplclib.Reparametrize(u1, u2, tcol_knots)
 
 
 def find_span(n, p, u, uk):

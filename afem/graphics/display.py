@@ -18,9 +18,9 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 import os
 
-from OCCT.SMESH import SMESH_Mesh, SMESH_subMesh
-from OCCT.TopoDS import TopoDS_Shape
-from OCCT.Visualization import BasicViewer
+from OCC.Core.SMESH import SMESH_Mesh, SMESH_subMesh
+from OCC.Core.TopoDS import TopoDS_Shape
+from OCC.Core.Visualization import BasicViewer
 
 from afem.base.entities import ViewableItem
 from afem.smesh.entities import Mesh, SubMesh, MeshGroup

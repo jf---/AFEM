@@ -16,9 +16,9 @@
 # You should have received a copy of the GNU Lesser General Public
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
-from OCCT.SMDS import SMDS_ListOfNodes, SMDS_ListOfElements
-from OCCT.SMESH import SMESH_MeshEditor, SMESH_MesherHelper
-from OCCT.gp import gp_Trsf
+from OCC.Core.gp import gp_Trsf
+from OCC.Core.SMDS import SMDS_ListOfNodes, SMDS_ListOfElements
+from OCC.Core.SMESH import SMESH_MeshEditor, SMESH_MesherHelper
 
 from afem.geometry.check import CheckGeom
 from afem.smesh.entities import Element, Node

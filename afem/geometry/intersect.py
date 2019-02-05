@@ -16,13 +16,13 @@
 # You should have received a copy of the GNU Lesser General Public
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
-from OCCT.BRepBuilderAPI import BRepBuilderAPI_MakeEdge
-from OCCT.Extrema import Extrema_ExtPC
-from OCCT.GeomAPI import GeomAPI_IntCS
-from OCCT.GeomInt import GeomInt_IntSS
-from OCCT.IntTools import IntTools_EdgeEdge
-from OCCT.ShapeFix import ShapeFix_ShapeTolerance
-from OCCT.TopAbs import TopAbs_VERTEX
+from OCC.Core.BRepBuilderAPI import BRepBuilderAPI_MakeEdge
+from OCC.Core.Extrema import Extrema_ExtPC
+from OCC.Core.GeomAPI import GeomAPI_IntCS
+from OCC.Core.GeomInt import GeomInt_IntSS
+from OCC.Core.IntTools import IntTools_EdgeEdge
+from OCC.Core.ShapeFix import ShapeFix_ShapeTolerance
+from OCC.Core.TopAbs import TopAbs_VERTEX
 from numpy import float64, inf, mean, sqrt, zeros
 from scipy.spatial import KDTree
 
@@ -195,7 +195,7 @@ class IntersectCurveSurface(CurveIntersector):
         csi = GeomAPI_IntCS(crv.object, srf.object)
         results = []
         for i in range(1, csi.NbPoints() + 1):
-            u, v, t = csi.Parameters(i, 0., 0., 0.)
+            u, v, t = csi.Parameters(i) #, 0., 0., 0.)
             pc = crv.eval(t)
             ps = srf.eval(u, v)
             pi = mean([pc, ps], axis=0)

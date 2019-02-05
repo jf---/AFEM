@@ -18,14 +18,15 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 from datetime import datetime
 
-from OCCT.BOPAlgo import BOPAlgo_MakerVolume, BOPAlgo_Options
-from OCCT.BRepAlgoAPI import (BRepAlgoAPI_Common, BRepAlgoAPI_Cut,
+from OCC.Core.BOPAlgo import BOPAlgo_MakerVolume # BOPAlgo_Options
+from OCC.Core.BRepAlgoAPI import (BRepAlgoAPI_Common, BRepAlgoAPI_Cut,
                               BRepAlgoAPI_Fuse, BRepAlgoAPI_Section,
-                              BRepAlgoAPI_Splitter)
-from OCCT.BRepFeat import BRepFeat_MakeCylindricalHole, BRepFeat_SplitShape
-from OCCT.Message import Message_Gravity
-from OCCT.TopTools import TopTools_SequenceOfShape
-from OCCT.TopoDS import TopoDS_Face
+                              # BRepAlgoAPI_Splitter
+)
+from OCC.Core.BRepFeat import BRepFeat_MakeCylindricalHole, BRepFeat_SplitShape
+# from OCC.Core.Message import Message_Gravity
+from OCC.Core.TopTools import TopTools_SequenceOfShape
+from OCC.Core.TopoDS import TopoDS_Face
 
 from afem.config import logger
 from afem.geometry.entities import Surface
@@ -40,12 +41,12 @@ __all__ = ["BopCore", "BopAlgo", "FuseShapes", "CutShapes", "CommonShapes",
            "SplitWire", "TrimOpenWire"]
 
 # Turn on parallel Boolean execution by default
-BOPAlgo_Options.SetParallelMode_(True)
+# BOPAlgo_Options.SetParallelMode_(True)
 
 # Message gravities
-_gravities = [Message_Gravity.Message_Trace, Message_Gravity.Message_Info,
-              Message_Gravity.Message_Warning, Message_Gravity.Message_Alarm,
-              Message_Gravity.Message_Fail]
+# _gravities = [Message_Gravity.Message_Trace, Message_Gravity.Message_Info,
+#               Message_Gravity.Message_Warning, Message_Gravity.Message_Alarm,
+#               Message_Gravity.Message_Fail]
 
 
 class BopCore(object):
@@ -167,7 +168,8 @@ class BopAlgo(BopCore):
 
         :return: None.
         """
-        BOPAlgo_Options.SetParallelMode_(flag)
+        pass
+        # BOPAlgo_Options.SetParallelMode_(flag)
 
     def debug(self, path='.'):
         """
@@ -196,13 +198,13 @@ class BopAlgo(BopCore):
 
         # Errors and warnings report
         msg_report = self._bop.GetReport()
-        for gravity in _gravities:
-            msg_list = msg_report.GetAlerts(gravity)
-            if msg_list.Size() == 0:
-                continue
-            info.write('Messages:\n')
-            for msg in msg_list:
-                info.write('\t{}\n'.format(msg.GetMessageKey()))
+        # for gravity in _gravities:
+        #     msg_list = msg_report.GetAlerts(gravity)
+        #     if msg_list.Size() == 0:
+        #         continue
+        #     info.write('Messages:\n')
+        #     for msg in msg_list:
+        #         info.write('\t{}\n'.format(msg.GetMessageKey()))
 
         # Avoid circular imports
         from afem.exchange.brep import write_brep
@@ -293,7 +295,8 @@ class BopAlgo(BopCore):
 
         :return: None.
         """
-        if isinstance(self._bop, (BRepAlgoAPI_Splitter, BOPAlgo_MakerVolume,
+        if isinstance(self._bop, (#BRepAlgoAPI_Splitter,
+                                  BOPAlgo_MakerVolume,
                                   BRepFeat_MakeCylindricalHole)):
             n = self._bop.__class__.__name__
             msg = ('Refining edges not available for {}. '
@@ -308,7 +311,8 @@ class BopAlgo(BopCore):
         :return: The result flag of edge refining.
         :rtype: bool
         """
-        if isinstance(self._bop, (BRepAlgoAPI_Splitter, BOPAlgo_MakerVolume,
+        if isinstance(self._bop, (#BRepAlgoAPI_Splitter,
+                                  BOPAlgo_MakerVolume,
                                   BRepFeat_MakeCylindricalHole)):
             return False
         else:
@@ -321,7 +325,8 @@ class BopAlgo(BopCore):
             the shapes.
         :rtype: list(afem.topology.entities.Edge)
         """
-        if isinstance(self._bop, (BRepAlgoAPI_Splitter, BOPAlgo_MakerVolume,
+        if isinstance(self._bop, (#BRepAlgoAPI_Splitter,
+                                  BOPAlgo_MakerVolume,
                                   BRepFeat_MakeCylindricalHole)):
             n = self._bop.__class__.__name__
             msg = ('Getting section edges not available for {}. '
@@ -521,8 +526,9 @@ class SplitShapes(BopAlgo):
 
     def __init__(self, shape1=None, shape2=None, fuzzy_val=None,
                  nondestructive=False):
-        super(SplitShapes, self).__init__(shape1, shape2, fuzzy_val,
-                                          nondestructive, BRepAlgoAPI_Splitter)
+        raise NotImplementedError
+        # super(SplitShapes, self).__init__(shape1, shape2, fuzzy_val,
+        #                                   nondestructive, BRepAlgoAPI_Splitter)
 
 
 class VolumesFromShapes(BopAlgo):

@@ -18,27 +18,27 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 from math import sqrt
 
-from OCCT.BRep import BRep_Tool, BRep_Builder
-from OCCT.BRepAdaptor import BRepAdaptor_Curve
-from OCCT.BRepBndLib import BRepBndLib
-from OCCT.BRepBuilderAPI import (BRepBuilderAPI_Copy,
+from OCC import BRepGProp
+from OCC.Core.BRep import BRep_Tool, BRep_Builder
+from OCC.Core.BRepAdaptor import BRepAdaptor_Curve
+from OCC.Core.BRepBndLib import brepbndlib
+from OCC.Core.BRepBuilderAPI import (BRepBuilderAPI_Copy,
                                  BRepBuilderAPI_MakeVertex,
                                  BRepBuilderAPI_MakeEdge,
                                  BRepBuilderAPI_MakeWire,
                                  BRepBuilderAPI_MakeFace,
                                  BRepBuilderAPI_MakePolygon)
-from OCCT.BRepClass3d import BRepClass3d
-from OCCT.BRepGProp import BRepGProp
-from OCCT.BRepTools import BRepTools, BRepTools_WireExplorer
-from OCCT.Bnd import Bnd_Box
-from OCCT.GProp import GProp_GProps
-from OCCT.GeomConvert import GeomConvert_CompCurveToBSplineCurve
-from OCCT.ShapeAnalysis import ShapeAnalysis_Edge, ShapeAnalysis_ShapeTolerance
-from OCCT.ShapeFix import ShapeFix_Solid
-from OCCT.TopAbs import TopAbs_ShapeEnum
-from OCCT.TopExp import TopExp
-from OCCT.TopTools import TopTools_IndexedMapOfShape
-from OCCT.TopoDS import (TopoDS, TopoDS_Vertex, TopoDS_Edge, TopoDS_Wire,
+from OCC.Core.BRepClass3d import brepclass3d
+from OCC.Core.BRepGProp import brepgprop
+from OCC.Core.BRepTools import breptools, BRepTools_WireExplorer
+from OCC.Core.Bnd import Bnd_Box
+from OCC.Core.GProp import GProp_GProps
+from OCC.Core.GeomConvert import GeomConvert_CompCurveToBSplineCurve
+from OCC.Core.ShapeAnalysis import ShapeAnalysis_Edge, ShapeAnalysis_ShapeTolerance
+from OCC.Core.ShapeFix import ShapeFix_Solid
+from OCC.Core.TopAbs import *
+from OCC.Core.TopExp import TopExp_Explorer
+from OCC.Core.TopoDS import (topods, TopoDS_Vertex, TopoDS_Edge, TopoDS_Wire,
                          TopoDS_Face, TopoDS_Shell, TopoDS_Solid,
                          TopoDS_Compound, TopoDS_CompSolid, TopoDS_Shape,
                          TopoDS_Iterator)
@@ -72,15 +72,15 @@ class Shape(ViewableItem):
     :raise TypeError: If ``shape`` is not a ``TopoDS_Shape``.
     """
 
-    SHAPE = TopAbs_ShapeEnum.TopAbs_SHAPE
-    VERTEX = TopAbs_ShapeEnum.TopAbs_VERTEX
-    EDGE = TopAbs_ShapeEnum.TopAbs_EDGE
-    WIRE = TopAbs_ShapeEnum.TopAbs_WIRE
-    FACE = TopAbs_ShapeEnum.TopAbs_FACE
-    SHELL = TopAbs_ShapeEnum.TopAbs_SHELL
-    SOLID = TopAbs_ShapeEnum.TopAbs_SOLID
-    COMPSOLID = TopAbs_ShapeEnum.TopAbs_COMPSOLID
-    COMPOUND = TopAbs_ShapeEnum.TopAbs_COMPOUND
+    SHAPE = TopAbs_SHAPE
+    VERTEX = TopAbs_VERTEX
+    EDGE = TopAbs_EDGE
+    WIRE = TopAbs_WIRE
+    FACE = TopAbs_FACE
+    SHELL = TopAbs_SHELL
+    SOLID = TopAbs_SOLID
+    COMPSOLID = TopAbs_COMPSOLID
+    COMPOUND = TopAbs_COMPOUND
 
     def __init__(self, shape):
         if not isinstance(shape, TopoDS_Shape):
@@ -367,7 +367,7 @@ class Shape(ViewableItem):
         :rtype: float
         """
         props = GProp_GProps()
-        BRepGProp.LinearProperties_(self.object, props, True)
+        brepgprop.LinearProperties(self.object, props, True)
         return props.Mass()
 
     @property
@@ -377,7 +377,7 @@ class Shape(ViewableItem):
         :rtype: float
         """
         props = GProp_GProps()
-        BRepGProp.SurfaceProperties_(self.object, props, True)
+        brepgprop.SurfaceProperties(self.object, props, True)
         return props.Mass()
 
     @property
@@ -387,7 +387,7 @@ class Shape(ViewableItem):
         :rtype: float
         """
         props = GProp_GProps()
-        BRepGProp.VolumeProperties_(self.object, props, True)
+        brepgprop.VolumeProperties_(self.object, props, True)
         return props.Mass()
 
     @property
@@ -693,7 +693,7 @@ class Vertex(Shape):
             if not shape.ShapeType() == Shape.VERTEX:
                 raise TypeError('Shape is not a TopoDS_Vertex.')
             if not isinstance(shape, TopoDS_Vertex):
-                shape = TopoDS.Vertex_(shape)
+                shape = topods.Vertex(shape)
         super(Vertex, self).__init__(shape)
 
     @property
@@ -736,7 +736,7 @@ class Edge(Shape):
             if not shape.ShapeType() == Shape.EDGE:
                 raise TypeError('Shape is not a TopoDS_Edge.')
             if not isinstance(shape, TopoDS_Edge):
-                shape = TopoDS.Edge_(shape)
+                shape = topods.Edge(shape)
         super(Edge, self).__init__(shape)
 
     @property
@@ -770,7 +770,7 @@ class Edge(Shape):
         :return: The same parameter flag for the edge.
         :rtype: bool
         """
-        return BRep_Tool.SameParameter_(self.object)
+        return breptools.SameParameter(self.object)
 
     @property
     def same_range(self):
@@ -778,7 +778,7 @@ class Edge(Shape):
         :return: The same range flag for the edge.
         :rtype: bool
         """
-        return BRep_Tool.SameRange_(self.object)
+        return breptools.SameRange(self.object)
 
     @staticmethod
     def by_curve(curve):
@@ -807,7 +807,7 @@ class Wire(Shape):
             if not shape.ShapeType() == Shape.WIRE:
                 raise TypeError('Shape is not a TopoDS_Wire.')
             if not isinstance(shape, TopoDS_Wire):
-                shape = TopoDS.Wire_(shape)
+                shape = topods.Wire(shape)
         super(Wire, self).__init__(shape)
 
     @property
@@ -821,7 +821,7 @@ class Wire(Shape):
         exp = BRepTools_WireExplorer(self.object)
         tol = self.tol_max
         while exp.More():
-            e = TopoDS.Edge_(exp.Current())
+            e = topods.Edge(exp.Current())
             exp.Next()
             adp_crv = BRepAdaptor_Curve(e)
             geom_convert.Add(adp_crv.BSpline(), tol)
@@ -887,7 +887,7 @@ class Face(Shape):
             if not shape.ShapeType() == Shape.FACE:
                 raise TypeError('Shape is not a TopoDS_Face.')
             if not isinstance(shape, TopoDS_Face):
-                shape = TopoDS.Face_(shape)
+                shape = topods.Face(shape)
         super(Face, self).__init__(shape)
 
     @property
@@ -905,7 +905,7 @@ class Face(Shape):
         :return: The outer wire of the face.
         :rtype: afem.topology.entities.Wire
         """
-        return Wire(BRepTools.OuterWire_(self.object))
+        return Wire(breptools.OuterWire(self.object))
 
     def to_shell(self):
         """
@@ -959,7 +959,7 @@ class Shell(Shape):
             if not shape.ShapeType() == Shape.SHELL:
                 raise TypeError('Shape is not a TopoDS_Shell.')
             if not isinstance(shape, TopoDS_Shell):
-                shape = TopoDS.Shell_(shape)
+                shape = topods.Shell(shape)
         super(Shell, self).__init__(shape)
 
     @property
@@ -1025,7 +1025,7 @@ class Solid(Shape):
             if not shape.ShapeType() == Shape.SOLID:
                 raise TypeError('Shape is not a TopoDS_Solid.')
             if not isinstance(shape, TopoDS_Solid):
-                shape = TopoDS.Solid_(shape)
+                shape = topods.Solid(shape)
         super(Solid, self).__init__(shape)
 
     @property
@@ -1034,7 +1034,7 @@ class Solid(Shape):
         :return: The outer shell of the face.
         :rtype: afem.topology.entities.Shell
         """
-        return Shell(BRepClass3d.OuterShell_(self.object))
+        return Shell(brepclass3d.OuterShell(self.object))
 
     @staticmethod
     def by_shell(shell):
@@ -1063,7 +1063,7 @@ class CompSolid(Shape):
             if not shape.ShapeType() == Shape.COMPSOLID:
                 raise TypeError('Shape is not a TopoDS_CompSolid.')
             if not isinstance(shape, TopoDS_CompSolid):
-                shape = TopoDS.CompSolid_(shape)
+                shape = topods.CompSolid(shape)
         super(CompSolid, self).__init__(shape)
 
 
@@ -1081,7 +1081,7 @@ class Compound(Shape):
             if not shape.ShapeType() == Shape.COMPOUND:
                 raise TypeError('Shape is not a TopoDS_Compound.')
             if not isinstance(shape, TopoDS_Compound):
-                shape = TopoDS.Compound_(shape)
+                shape = topods.Compound(shape)
         super(Compound, self).__init__(shape)
 
     @property
@@ -1300,7 +1300,7 @@ class BBox(Bnd_Box):
 
         :return: None.
         """
-        BRepBndLib.Add_(shape.object, self, True)
+        brepbndlib.Add(shape.object, self, True)
 
     def is_pnt_out(self, pnt):
         """

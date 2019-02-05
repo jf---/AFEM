@@ -18,9 +18,9 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 from math import sqrt
 
-from OCCT.BRepBuilderAPI import BRepBuilderAPI_Transformed
-from OCCT.BRepOffset import BRepOffset_Skin
-from OCCT.BRepOffsetAPI import (BRepOffsetAPI_MakeOffsetShape,
+from OCC.Core.BRepBuilderAPI import BRepBuilderAPI_Transformed
+from OCC.Core.BRepOffset import BRepOffset_Skin
+from OCC.Core.BRepOffsetAPI import (BRepOffsetAPI_MakeOffsetShape,
                                 BRepOffsetAPI_MakePipe,
                                 BRepOffsetAPI_MakePipeShell,
                                 BRepOffsetAPI_NormalProjection,

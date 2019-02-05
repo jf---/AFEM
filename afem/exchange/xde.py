@@ -16,23 +16,28 @@
 # You should have received a copy of the GNU Lesser General Public
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
-from OCCT.BinXCAFDrivers import BinXCAFDrivers
-from OCCT.IFSelect import IFSelect_RetError
-from OCCT.Interface import Interface_Static
-from OCCT.PCDM import PCDM_StoreStatus, PCDM_ReaderStatus
-from OCCT.STEPCAFControl import STEPCAFControl_Reader
-from OCCT.STEPCAFControl import STEPCAFControl_Writer
-from OCCT.STEPConstruct import STEPConstruct
-from OCCT.TCollection import (TCollection_ExtendedString,
+# from OCC.Core.BinXCAFDrivers import BinXCAFDrivers
+# from OCC import BinXCAFDrivers, XmlXCAFDrivers
+
+# , XmlXCAFDrivers
+from OCC.Core.IFSelect import IFSelect_RetError
+from OCC.Core.Interface import Interface_Static
+# from OCC.Core.PCDM import PCDM_StoreStatus, PCDM_ReaderStatus
+from OCC.Core.PCDM import PCDM_RS_OK, PCDM_SS_OK
+from OCC.Core.STEPCAFControl import STEPCAFControl_Reader
+from OCC.Core.STEPCAFControl import STEPCAFControl_Writer
+# from OCC.Core.STEPConstruct import STEPConstruct
+from OCC.Core.STEPConstruct import stepconstruct_FindEntity
+from OCC.Core.TCollection import (TCollection_ExtendedString,
                               TCollection_AsciiString,
                               TCollection_HAsciiString)
-from OCCT.TDF import TDF_ChildIterator, TDF_Label, TDF_LabelSequence
-from OCCT.TDataStd import TDataStd_Name, TDataStd_AsciiString
-from OCCT.TDocStd import TDocStd_Document
-from OCCT.TNaming import TNaming_NamedShape
-from OCCT.XCAFApp import XCAFApp_Application
-from OCCT.XCAFDoc import XCAFDoc_DocumentTool, XCAFDoc_Color
-from OCCT.XmlXCAFDrivers import XmlXCAFDrivers
+from OCC.Core.TDF import TDF_ChildIterator, TDF_Label, TDF_LabelSequence
+from OCC.Core.TDataStd import TDataStd_Name, TDataStd_AsciiString
+from OCC.Core.TDocStd import TDocStd_Document
+from OCC.Core.TNaming import TNaming_NamedShape
+from OCC.Core.XCAFApp import XCAFApp_Application
+from OCC.Core.XCAFDoc import XCAFDoc_DocumentTool, XCAFDoc_Color
+# from OCC.Core.XmlXCAFDrivers import XmlXCAFDrivers
 
 from afem.config import units_dict, Settings
 from afem.topology.entities import Shape
@@ -58,10 +63,10 @@ class XdeDocument(object):
 
         # Get application
         self._app = XCAFApp_Application.GetApplication_()
-        if binary:
-            BinXCAFDrivers.DefineFormat_(self._app)
-        else:
-            XmlXCAFDrivers.DefineFormat_(self._app)
+        # if binary:
+        #     BinXCAFDrivers.DefineFormat_(self._app)
+        # else:
+        #     XmlXCAFDrivers.DefineFormat_(self._app)
 
         # Initialize document
         fmt = TCollection_ExtendedString(self._fmt)
@@ -108,7 +113,7 @@ class XdeDocument(object):
 
         txt = TCollection_ExtendedString(fn)
         status, self._doc = self._app.Open(txt, self._doc)
-        if status != PCDM_ReaderStatus.PCDM_RS_OK:
+        if status != PCDM_RS_OK:
             return False
         self._init_tool()
         return True
@@ -127,7 +132,7 @@ class XdeDocument(object):
 
         txt = TCollection_ExtendedString(fn)
         status = self._app.SaveAs(self._doc, txt)
-        return status == PCDM_StoreStatus.PCDM_SS_OK
+        return status == PCDM_SS_OK
 
     def close(self):
         """
@@ -174,12 +179,12 @@ class XdeDocument(object):
         self._step_writer.SetNameMode(True)
         self._step_writer.SetColorMode(True)
 
-        Interface_Static.SetCVal_('write.step.schema', schema)
+        Interface_Static.SetCVal('write.step.schema', schema)
         try:
             units = units_dict[units]
         except KeyError:
             units = Settings.units
-        Interface_Static.SetCVal_('write.step.unit', units)
+        Interface_Static.SetCVal('write.step.unit', units)
 
         self._step_writer.Transfer(self._doc)
 
@@ -202,7 +207,7 @@ class XdeDocument(object):
         if self._step_writer is None:
             raise RuntimeError('Document has not been transferred.')
 
-        item = STEPConstruct.FindEntity_(self._step_fp, shape.object)
+        item = stepconstruct_FindEntity(self._step_fp, shape.object)
         if not item:
             return False
 

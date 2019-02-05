@@ -16,11 +16,14 @@
 # You should have received a copy of the GNU Lesser General Public
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
-from OCCT.Adaptor3d import Adaptor3d_Curve, Adaptor3d_Surface
-from OCCT.BRepAdaptor import (BRepAdaptor_Curve, BRepAdaptor_CompCurve,
+
+
+
+from OCC.Core.Adaptor3d import Adaptor3d_Curve, Adaptor3d_Surface
+from OCC.Core.BRepAdaptor import (BRepAdaptor_Curve, BRepAdaptor_CompCurve,
                               BRepAdaptor_Surface)
-from OCCT.GCPnts import GCPnts_AbscissaPoint
-from OCCT.GeomAdaptor import GeomAdaptor_Curve, GeomAdaptor_Surface
+from OCC.Core.GCPnts import GCPnts_AbscissaPoint
+from OCC.Core.GeomAdaptor import GeomAdaptor_Curve, GeomAdaptor_Surface
 
 __all__ = ["AdaptorBase", "AdaptorCurve", "GeomAdaptorCurve",
            "EdgeAdaptorCurve", "WireAdaptorCurve",
@@ -161,7 +164,7 @@ class AdaptorCurve(AdaptorBase):
         """
         if u1 > u2:
             u1, u2 = u2, u1
-        return GCPnts_AbscissaPoint.Length_(self.object, u1, u2, tol)
+        return GCPnts_AbscissaPoint.Length(self.object, u1, u2, tol)
 
     @staticmethod
     def to_adaptor(entity):

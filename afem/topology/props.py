@@ -16,8 +16,8 @@
 # You should have received a copy of the GNU Lesser General Public
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
-from OCCT.BRepGProp import BRepGProp
-from OCCT.GProp import GProp_GProps
+from OCC.Core.BRepGProp import brepgprop
+from OCC.Core.GProp import GProp_GProps
 from numpy import array
 
 from afem.geometry.entities import Point
@@ -100,7 +100,7 @@ class LinearProps(ShapeProps):
 
     def __init__(self, shape, skip_shared=True):
         super(LinearProps, self).__init__()
-        BRepGProp.LinearProperties_(shape.object, self._props, skip_shared)
+        brepgprop.LinearProperties(shape.object, self._props, skip_shared)
 
     @property
     def length(self):
@@ -123,7 +123,7 @@ class SurfaceProps(ShapeProps):
 
     def __init__(self, shape, tol=1.0e-7, skip_shared=False):
         super(SurfaceProps, self).__init__()
-        BRepGProp.SurfaceProperties_(shape.object, self._props, tol,
+        brepgprop.SurfaceProperties(shape.object, self._props, tol,
                                      skip_shared)
 
     @property
@@ -151,7 +151,7 @@ class VolumeProps(ShapeProps):
     def __init__(self, shape, tol=1.0e-7, only_closed=False,
                  skip_shared=False):
         super(VolumeProps, self).__init__()
-        BRepGProp.VolumeProperties_(shape.object, self._props, tol,
+        brepgprop.VolumeProperties(shape.object, self._props, tol,
                                     only_closed, skip_shared)
 
     @property

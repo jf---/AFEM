@@ -18,7 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 from math import sqrt
 
-from OCCT.Extrema import (Extrema_ExtCC, Extrema_ExtCS, Extrema_ExtPC,
+from OCC.Core.Extrema import (Extrema_ExtCC, Extrema_ExtCS, Extrema_ExtPC,
                           Extrema_ExtPS, Extrema_ExtSS)
 
 from afem.adaptor.entities import AdaptorCurve, AdaptorSurface

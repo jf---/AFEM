@@ -16,9 +16,9 @@
 # You should have received a copy of the GNU Lesser General Public
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
-from OCCT.IFSelect import IFSelect_RetDone
-from OCCT.IGESControl import IGESControl_Reader, IGESControl_Writer
-from OCCT.Interface import Interface_Static
+from OCC.Core.IFSelect import IFSelect_RetDone
+from OCC.Core.IGESControl import IGESControl_Reader, IGESControl_Writer
+from OCC.Core.Interface import Interface_Static
 
 from afem.config import Settings, units_dict
 from afem.topology.entities import Shape

@@ -16,9 +16,9 @@
 # You should have received a copy of the GNU Lesser General Public
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
-from OCCT.BRepCheck import BRepCheck_Analyzer
-from OCCT.ShapeBuild import ShapeBuild_ReShape
-from OCCT.ShapeFix import ShapeFix_Shape, ShapeFix_ShapeTolerance
+from OCC.Core.BRepCheck import BRepCheck_Analyzer
+from OCC.Core.ShapeBuild import ShapeBuild_ReShape
+from OCC.Core.ShapeFix import ShapeFix_Shape, ShapeFix_ShapeTolerance
 
 from afem.topology.entities import Shape
 
